@@ -1,7 +1,7 @@
 import 'package:bytebank2/components/loading.dart';
 import 'package:bytebank2/database/dao/contact_dao.dart';
 import 'package:bytebank2/models/contact.dart';
-import 'package:bytebank2/screens/contact_form.dart';
+import 'package:bytebank2/screens/contacts/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
