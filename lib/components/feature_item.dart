@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class NavigationItem extends StatelessWidget {
-  const NavigationItem({
+class FeatureItem extends StatelessWidget {
+  const FeatureItem(
+    String textButton,
+    IconData icon, {
     Key key,
-    @required String textButton,
-    @required Widget screen,
-    @required IconData icon,
+    @required Function onClick,
   })  : _textButton = textButton,
-        _screen = screen,
+        _onClick = onClick,
         _icon = icon,
         super(key: key);
 
   final String _textButton;
-  final Widget _screen;
+  final Function _onClick;
   final IconData _icon;
 
   @override
@@ -22,11 +22,7 @@ class NavigationItem extends StatelessWidget {
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => _screen,
-            ));
-          },
+          onTap: () => _onClick(),
           child: Container(
             padding: EdgeInsets.all(8.0),
             height: 100,

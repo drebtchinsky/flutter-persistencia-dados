@@ -1,5 +1,6 @@
-import 'package:bytebank2/components/navigation_item.dart';
+import 'package:bytebank2/components/feature_item.dart';
 import 'package:bytebank2/screens/contacts/contacts_list.dart';
+import 'package:bytebank2/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -14,42 +15,50 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text(_appBarTitle),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset('images/bytebank_logo.png'),
-            ),
-            SizedBox(
-              height: 100.0,
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  NavigationItem(
-                    textButton: _textButtonContacts,
-                    screen: ContactsList(),
-                    icon: Icons.people,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('images/bytebank_logo.png'),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  FeatureItem(
+                    _textButtonTransfer,
+                    Icons.monetization_on,
+                    onClick: () {
+                      _showContatctsList(context);
+                    },
                   ),
-                  NavigationItem(
-                    textButton: _textButtonTransfer,
-                    screen: ContactsList(),
-                    icon: Icons.monetization_on,
-                  ),
-                  NavigationItem(
-                    textButton: _textButtonTransactionFeed,
-                    screen: ContactsList(),
-                    icon: Icons.description,
+                  FeatureItem(
+                    _textButtonTransactionFeed,
+                    Icons.description,
+                    onClick: () => _showTransactionsList(context),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _showContatctsList(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ContactsList(),
+    ));
+  }
+
+  void _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => TransactionsList(),
+    ));
   }
 }
