@@ -13,4 +13,14 @@ class Transaction {
   String toString() {
     return 'Transaction{value: $value, contact: $contact}';
   }
+
+  Map<String, dynamic> getMap() {
+    return {
+      'value': value,
+      'contact': {
+        'name': contact.name,
+        'accountNumber': contact.accountNumber,
+      },
+    };
+  }
 }

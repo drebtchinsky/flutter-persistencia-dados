@@ -2,7 +2,7 @@ import 'package:bytebank2/components/centered_message.dart';
 import 'package:bytebank2/components/loading.dart';
 import 'package:bytebank2/http/webclient.dart';
 import 'package:bytebank2/models/transaction.dart';
-import 'package:bytebank2/screens/transaction_item.dart';
+import 'package:bytebank2/screens/transfers/transaction_item.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsList extends StatelessWidget {
