@@ -14,13 +14,12 @@ class Transaction {
     return 'Transaction{value: $value, contact: $contact}';
   }
 
-  Map<String, dynamic> getMap() {
-    return {
-      'value': value,
-      'contact': {
-        'name': contact.name,
-        'accountNumber': contact.accountNumber,
-      },
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'value': value,
+        'contact': contact.toJson(),
+      };
+
+  Transaction.fromJson(Map<String, dynamic> json)
+      : value = json['value'],
+        contact = Contact.fromJson(json['contact']);
 }

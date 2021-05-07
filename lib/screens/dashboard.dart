@@ -4,7 +4,6 @@ import 'package:bytebank2/screens/transfers/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
-  final String _textButtonContacts = 'Contacts';
   final String _textButtonTransfer = 'Transfer';
   final String _textButtonTransactionFeed = 'Transaction Feed';
   final String _appBarTitle = 'dashboard';
