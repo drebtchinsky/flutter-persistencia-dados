@@ -1,38 +1,45 @@
+import 'package:bytebank2/components/centered_message.dart';
+import 'package:bytebank2/components/loading.dart';
+import 'package:bytebank2/http/webclient.dart';
 import 'package:bytebank2/models/transaction.dart';
+import 'package:bytebank2/screens/transaction_item.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsList extends StatelessWidget {
-  final List<Transaction> transactions = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Transactions'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final Transaction transaction = transactions[index];
-          return Card(
-            child: ListTile(
-              leading: Icon(Icons.monetization_on),
-              title: Text(
-                transaction.value.toString(),
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                transaction.contact.accountNumber.toString(),
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-          );
+      body: FutureBuilder<List<Transaction>>(
+        future: WebClient().findAll(),
+        // Future.delayed(Duration(seconds: 2))
+        //     .then((value) => WebClient().findAll()),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Loading();
+              break;
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                if (snapshot.data.isNotEmpty) {
+                  return TransactionItem(transactions: snapshot.data);
+                }
+              }
+              return CenteredMessage(
+                'No transactions found',
+                icon: Icons.warning,
+              );
+
+              break;
+          }
+          return CenteredMessage('Unkown error');
         },
-        itemCount: transactions.length,
       ),
     );
   }
