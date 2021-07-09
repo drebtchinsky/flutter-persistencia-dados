@@ -21,14 +21,14 @@ class TransactionWebClient extends WebClient {
         .toList();
   }
 
-  Future<Transaction> save(Transaction transaction) async {
+  Future<Transaction> save(Transaction transaction, String password) async {
     final Response response = await this
         .client
         .post(
           _uri,
           headers: {
             "Content-Type": "application/json",
-            "password": "1000",
+            "password": password,
           },
           body: jsonEncode(transaction.toJson()),
         )
