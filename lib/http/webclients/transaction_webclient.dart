@@ -22,19 +22,28 @@ class TransactionWebClient extends WebClient {
   }
 
   Future<Transaction> save(Transaction transaction, String password) async {
-    final Response response = await this
-        .client
-        .post(
+    final Response response = await this.client.post(
           _uri,
           headers: {
             "Content-Type": "application/json",
             "password": password,
           },
           body: jsonEncode(transaction.toJson()),
-        )
-        .timeout(
-          Duration(seconds: 5),
         );
-    return Transaction.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      return Transaction.fromJson(jsonDecode(response.body));
+    }
+    throw HttpException(_statusCodeResponse[response.statusCode]);
   }
+
+  static final Map<int, String> _statusCodeResponse = {
+    400: 'there was an error submitting transaction',
+    401: 'authentication failed'
+  };
+}
+
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
 }

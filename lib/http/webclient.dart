@@ -4,9 +4,10 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 class WebClient {
   WebClient() {
-    client = HttpClientWithInterceptor.build(interceptors: [
-      LoggingInterceptor(),
-    ]);
+    client = HttpClientWithInterceptor.build(
+      interceptors: [LoggingInterceptor()],
+      requestTimeout: Duration(seconds: 5),
+    );
     host = '192.168.0.106:8080';
   }
 
