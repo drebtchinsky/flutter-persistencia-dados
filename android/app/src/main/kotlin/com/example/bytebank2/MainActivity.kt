@@ -1,4 +1,4 @@
-package com.example.bytebank2
+package com.drebtch.bytebank2
 
 import io.flutter.embedding.android.FlutterActivity
 

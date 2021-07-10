@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bytebank2">
+    package="com.drebtch.bytebank2">
    <application
         android:label="bytebank2"
        android:usesCleartextTraffic="true"
