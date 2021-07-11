@@ -15,6 +15,10 @@ class FeatureItem extends StatelessWidget {
   final Function _onClick;
   final IconData _icon;
 
+  get name => _textButton;
+
+  get icon => _icon;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
