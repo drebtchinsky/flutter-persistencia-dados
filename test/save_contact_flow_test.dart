@@ -1,9 +1,11 @@
 import 'package:bytebank2/main.dart';
+import 'package:bytebank2/models/contact.dart';
 import 'package:bytebank2/screens/contacts/contact_form.dart';
 import 'package:bytebank2/screens/contacts/contacts_list.dart';
 import 'package:bytebank2/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import 'matchers.dart';
 import 'mocks.dart';
@@ -27,6 +29,7 @@ void main() {
 
     final contactsList = find.byType(ContactsList);
     expect(contactsList, findsOneWidget);
+    verify(mockContactDao.findAll()).called(1);
 
     final fabNewContact = find.widgetWithIcon(FloatingActionButton, Icons.add);
     expect(fabNewContact, findsOneWidget);
@@ -36,31 +39,26 @@ void main() {
     final contactsForm = find.byType(ContactForm);
     expect(contactsForm, findsOneWidget);
 
-    final nameTextField = find.byWidgetPredicate((widget) {
-      if (widget is TextField) {
-        return widget.decoration.labelText == 'Full Name';
-      }
-      return false;
-    });
+    final nameTextField = find.byWidgetPredicate(
+      (widget) => textFieldMatcher(widget, 'Full Name'),
+    );
     expect(nameTextField, findsOneWidget);
     await tester.enterText(nameTextField, 'Teste');
 
-    final accountNumberTextField = find.byWidgetPredicate((widget) {
-      if (widget is TextField) {
-        return widget.decoration.labelText == 'Account Number';
-      }
-      return false;
-    });
+    final accountNumberTextField = find.byWidgetPredicate(
+      (widget) => textFieldMatcher(widget, 'Account Number'),
+    );
     expect(accountNumberTextField, findsOneWidget);
     await tester.enterText(accountNumberTextField, '1000');
 
     final createButton = find.widgetWithText(ElevatedButton, 'Create');
     expect(createButton, findsOneWidget);
-
     await tester.tap(createButton);
     await tester.pumpAndSettle();
+    verify(mockContactDao.save(Contact(0, 'Teste', 1000))).called(1);
 
     final contactsListBack = find.byType(ContactsList);
     expect(contactsListBack, findsOneWidget);
+    verify(mockContactDao.findAll()).called(1);
   });
 }

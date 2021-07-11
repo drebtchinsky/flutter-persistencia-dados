@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Contact {
   final int id;
   final String name;
@@ -24,4 +26,15 @@ class Contact {
       : id = json['id'],
         name = json['name'],
         accountNumber = json['accountNumber'];
+
+  @override
+  bool operator ==(Object outher) =>
+      identical(this, outher) ||
+      outher is Contact &&
+          runtimeType == outher.runtimeType &&
+          name == outher.name &&
+          accountNumber == outher.accountNumber;
+
+  @override
+  int get hashCode => name.hashCode ^ accountNumber.hashCode;
 }
