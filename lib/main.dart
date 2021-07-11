@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:bytebank2/screens/dashboard.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   if (kDebugMode) {
-    // Esta linha avisa a todas as instâncias do Crashlytics no projeto que ele não poderá registrar relatórios de erro
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   } else {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -14,7 +18,9 @@ void main() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   }
 
-  runApp(Bytebank2App());
+  runZonedGuarded<Future<void>>(() async {
+    runApp(Bytebank2App());
+  }, FirebaseCrashlytics.instance.recordError);
 }
 
 class Bytebank2App extends StatelessWidget {

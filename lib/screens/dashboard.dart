@@ -14,37 +14,44 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text(_appBarTitle),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  FeatureItem(
-                    _textButtonTransfer,
-                    Icons.monetization_on,
-                    onClick: () {
-                      _showContatctsList(context);
-                    },
+      body: LayoutBuilder(
+        builder: (context, constaints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constaints.maxHeight),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset('images/bytebank_logo.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        FeatureItem(
+                          _textButtonTransfer,
+                          Icons.monetization_on,
+                          onClick: () {
+                            _showContatctsList(context);
+                          },
+                        ),
+                        FeatureItem(
+                          _textButtonTransactionFeed,
+                          Icons.description,
+                          onClick: () => _showTransactionsList(context),
+                        ),
+                      ],
+                    ),
                   ),
-                  FeatureItem(
-                    _textButtonTransactionFeed,
-                    Icons.description,
-                    onClick: () => _showTransactionsList(context),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
