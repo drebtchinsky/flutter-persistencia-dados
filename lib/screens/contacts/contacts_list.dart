@@ -6,14 +6,19 @@ import 'package:bytebank2/screens/transfers/transaction_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
+  final ContactDao contactDao;
+
+  const ContactsList({Key key, @required this.contactDao}) : super(key: key);
   @override
-  _ContactsListState createState() => _ContactsListState();
+  _ContactsListState createState() => _ContactsListState(contactDao);
 }
 
 class _ContactsListState extends State<ContactsList> {
   final String _appBarTitle = 'Contacts';
 
-  final ContactDao _dao = ContactDao();
+  final ContactDao contactDao;
+
+  _ContactsListState(this.contactDao);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +45,13 @@ class _ContactsListState extends State<ContactsList> {
           }
           return Text('Unknown error');
         },
-        future: _dao.findAll(),
+        future: contactDao.findAll(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(
-                builder: (context) => ContactForm(),
+                builder: (context) => ContactForm(contactDao: contactDao),
               ))
               .then((value) => setState(() {}));
         },

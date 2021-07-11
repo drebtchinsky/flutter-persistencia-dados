@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bytebank2/database/dao/contact_dao.dart';
 import 'package:bytebank2/screens/dashboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,17 @@ void main() async {
   }
 
   runZonedGuarded<Future<void>>(() async {
-    runApp(Bytebank2App());
+    runApp(Bytebank2App(
+      contactDao: ContactDao(),
+    ));
   }, FirebaseCrashlytics.instance.recordError);
 }
 
 class Bytebank2App extends StatelessWidget {
+  final ContactDao contactDao;
+
+  const Bytebank2App({Key key, @required this.contactDao}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -36,7 +43,9 @@ class Bytebank2App extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: Dashboard(),
+      home: Dashboard(
+        contactDao: contactDao,
+      ),
     );
   }
 }

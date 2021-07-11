@@ -1,12 +1,16 @@
 import 'package:bytebank2/components/feature_item.dart';
+import 'package:bytebank2/database/dao/contact_dao.dart';
 import 'package:bytebank2/screens/contacts/contacts_list.dart';
 import 'package:bytebank2/screens/transfers/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
+  final ContactDao contactDao;
   final String _textButtonTransfer = 'Transfer';
   final String _textButtonTransactionFeed = 'Transaction Feed';
   final String _appBarTitle = 'dashboard';
+
+  const Dashboard({Key key, @required this.contactDao}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +62,7 @@ class Dashboard extends StatelessWidget {
 
   void _showContatctsList(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ContactsList(),
+      builder: (context) => ContactsList(contactDao: contactDao),
     ));
   }
 
