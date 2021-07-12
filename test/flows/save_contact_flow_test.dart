@@ -7,24 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'matchers.dart';
-import 'mocks.dart';
+import '../matchers/matchers.dart';
+import '../mock/mocks.dart';
+import 'actions.dart';
 
 void main() {
   testWidgets('Should save a contact', (tester) async {
     final mockContactDao = MockContactDao();
+    final mockTransactionWebClient = MockTransactionWebClient();
     await tester.pumpWidget(Bytebank2App(
       contactDao: mockContactDao,
+      transactionWebClient: mockTransactionWebClient,
     ));
 
     final dashboard = find.byType(Dashboard);
     expect(dashboard, findsOneWidget);
 
-    final transferFeatureItem = find.byWidgetPredicate(
-        (Widget widget) => findFeatureItem(widget, name: 'Transfer'));
-    expect(transferFeatureItem, findsOneWidget);
-
-    await tester.tap(transferFeatureItem);
+    await clickOnTransferFeatureItem(tester);
     await tester.pumpAndSettle();
 
     final contactsList = find.byType(ContactsList);

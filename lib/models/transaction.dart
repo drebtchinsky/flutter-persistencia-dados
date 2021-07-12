@@ -26,4 +26,15 @@ class Transaction {
       : id = json['id'],
         value = json['value'],
         contact = Contact.fromJson(json['contact']);
+
+  @override
+  bool operator ==(Object outher) =>
+      identical(this, outher) ||
+      outher is Transaction &&
+          runtimeType == outher.runtimeType &&
+          value == outher.value &&
+          contact == outher.contact;
+
+  @override
+  int get hashCode => value.hashCode ^ contact.hashCode;
 }

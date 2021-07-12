@@ -2,8 +2,8 @@ import 'package:bytebank2/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'matchers.dart';
-import 'mocks.dart';
+import '../matchers/matchers.dart';
+import '../mock/mocks.dart';
 
 void main() {
   testWidgets('Should display the main image when the Dashboard is opened',
@@ -37,8 +37,6 @@ void main() {
 
 Future<void> _pumpDashboardWidget(WidgetTester tester) async {
   await tester.pumpWidget(MaterialApp(
-    home: Dashboard(
-      contactDao: MockContactDao(),
-    ),
+    home: Dashboard(),
   ));
 }

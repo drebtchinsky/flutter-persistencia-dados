@@ -6,6 +6,7 @@ import 'package:bytebank2/components/transaction_auth_dialog.dart';
 import 'package:bytebank2/http/webclients/transaction_webclient.dart';
 import 'package:bytebank2/models/contact.dart';
 import 'package:bytebank2/models/transaction.dart';
+import 'package:bytebank2/widgets/app_dependences.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -21,13 +22,13 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
-  final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = Uuid().v4();
 
   bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
+    final AppDependences dependences = AppDependences.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('New transaction'),
@@ -88,7 +89,12 @@ class _TransactionFormState extends State<TransactionForm> {
                           builder: (contextDialog) {
                             return TransactionAuthDialog(
                               onConfirm: (String password) {
-                                _save(transactionCreated, password, context);
+                                _save(
+                                  dependences.transactionWebClient,
+                                  transactionCreated,
+                                  password,
+                                  context,
+                                );
                               },
                             );
                           });
@@ -104,6 +110,7 @@ class _TransactionFormState extends State<TransactionForm> {
   }
 
   void _save(
+    TransactionWebClient webClient,
     Transaction transactionCreated,
     String password,
     BuildContext context,
@@ -112,6 +119,7 @@ class _TransactionFormState extends State<TransactionForm> {
       _sending = true;
     });
     Transaction transaction = await _send(
+      webClient,
       transactionCreated,
       password,
       context,
@@ -136,10 +144,14 @@ class _TransactionFormState extends State<TransactionForm> {
     }
   }
 
-  Future<Transaction> _send(Transaction transactionCreated, String password,
-      BuildContext context, Function cb) async {
+  Future<Transaction> _send(
+      TransactionWebClient webClient,
+      Transaction transactionCreated,
+      String password,
+      BuildContext context,
+      Function cb) async {
     final Transaction transaction =
-        await _webClient.save(transactionCreated, password).catchError((error) {
+        await webClient.save(transactionCreated, password).catchError((error) {
       if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
         FirebaseCrashlytics.instance
             .setCustomKey('exception', error.toString());

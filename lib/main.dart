@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bytebank2/database/dao/contact_dao.dart';
+import 'package:bytebank2/http/webclients/transaction_webclient.dart';
 import 'package:bytebank2/screens/dashboard.dart';
+import 'package:bytebank2/widgets/app_dependences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -28,23 +30,31 @@ void main() async {
 
 class Bytebank2App extends StatelessWidget {
   final ContactDao contactDao;
+  final TransactionWebClient transactionWebClient;
 
-  const Bytebank2App({Key key, @required this.contactDao}) : super(key: key);
+  const Bytebank2App(
+      {Key key, @required this.contactDao, @required this.transactionWebClient})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.green[900],
-        accentColor: Colors.blueAccent[700],
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.blueAccent[700],
-          textTheme: ButtonTextTheme.primary,
+    final ThemeData theme = ThemeData();
+    return AppDependences(
+      contactDao: contactDao,
+      transactionWebClient: transactionWebClient,
+      child: MaterialApp(
+        theme: theme.copyWith(
+          primaryColor: Colors.green[900],
+          colorScheme: theme.colorScheme.copyWith(
+            secondary: Colors.blueAccent[700],
+          ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.blueAccent[700],
+            textTheme: ButtonTextTheme.primary,
+          ),
         ),
-      ),
-      home: Dashboard(
-        contactDao: contactDao,
+        home: Dashboard(),
       ),
     );
   }
